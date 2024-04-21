@@ -42,6 +42,7 @@ curl -o OverwatchIcons/Icon-kiriko.png "https://static.wikia.nocookie.net/overwa
 curl -o OverwatchIcons/Icon-Ramattra.png "https://static.wikia.nocookie.net/overwatch_gamepedia/images/6/6f/Icon-Ramattra.png/revision/latest/scale-to-width-down/75?cb=20221206190323" 
 curl -o OverwatchIcons/Icon-Lifeweaver.png "https://static.wikia.nocookie.net/overwatch_gamepedia/images/8/86/Icon-Lifeweaver.png/revision/latest/scale-to-width-down/75?cb=2023041118132" 
 curl -o OverwatchIcons/Icon-Illari.png "https://static.wikia.nocookie.net/overwatch_gamepedia/images/8/86/Icon-Illari.png/revision/latest/scale-to-width-down/75?cb=20230811015354" 
-curl -o OverwatchIcons/Icon-Mauga.png "https://static.wikia.nocookie.net/overwatch_gamepedia/images/3/39/Icon-Mauga.png/revision/latest/scale-to-width-down/75?cb=20231205235708" 
+curl -o OverwatchIcons/Icon-Mauga.png "https://static.wikia.nocookie.net/overwatch_gamepedia/images/3/39/Icon-Mauga.png/revision/latest/scale-to-width-down/75?cb=20231205235708"
+curl -o OverwatchIcons/Icon-Venture.png "https://static.wikia.nocookie.net/overwatch_gamepedia/images/a/a0/Icon-Venture.png/revision/latest/scale-to-width-down/65?cb=20240417102123"
 
 echo "All files downloaded successfully!"

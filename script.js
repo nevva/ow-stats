@@ -94,6 +94,27 @@ function renderCharacters(characters) {
         const characterImage = document.createElement('img');
         characterImage.src = `OverwatchIcons/Icon-${character}.png`;
 
+        characterImage.addEventListener('click', () => {
+            console.log('Easter egg!');
+            const eastereggImageSrc = `OverwatchIcons/Icon-${character}-easteregg.png`;
+
+            fetch(eastereggImageSrc)
+                .then(response => {
+                    if (response.ok) {
+                        const eastereggImage = document.createElement('img');
+                        eastereggImage.src = eastereggImageSrc;
+                        characterImage.replaceWith(eastereggImage);
+                    } else if (response.status === 404) {
+                        // Handle 404 error here
+                        console.log('Easter egg image not found');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching Easter egg image:', error);
+                });
+        });
+
+
         characterElement.appendChild(name);
         characterElement.appendChild(characterImage);
         characterElement.appendChild(row);
