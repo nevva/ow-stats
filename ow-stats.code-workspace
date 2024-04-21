@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"name": "$web",
+			"uri": "azurestorageblob:/$web?storageAccountId=/subscriptions/b11f6247-0a2e-47ca-8dd0-51a62f21ce45/resourceGroups/labs/providers/Microsoft.Storage/storageAccounts/owstats"
+		}
+	],
+	"settings": {}
+}
