@@ -2,17 +2,20 @@ const originalOrder = ["Tracer", "Reaper", "Widowmaker", "Pharah", "Reinhardt", 
 const container = document.getElementById('container');
 
 const sortButtonsRow = document.createElement('div');
+sortButtonsRow.id = 'sort-buttons';
 sortButtonsRow.classList.add('row');
 const listContainer = document.createElement('div');
 listContainer.id = 'characters-list';
 const exportButton = document.createElement('button');
+const exportAllTimestamps = document.createElement('button');
 
 container.appendChild(sortButtonsRow);
 container.appendChild(listContainer);
 container.appendChild(exportButton);
+container.appendChild(exportAllTimestamps);
 
 document.addEventListener('DOMContentLoaded', () => {
-    
+
     const originalOrderButton = document.createElement('button');
     originalOrderButton.textContent = 'Original Order';
     originalOrderButton.addEventListener('click', () => {
@@ -22,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const nameButton = document.createElement('button');
     nameButton.textContent = 'Name';
     nameButton.addEventListener('click', () => {
-        const sortedCharacters = [...originalOrder].sort();
+        const sortedCharacters = [...originalOrder].sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
         renderCharacters(sortedCharacters);
     });
 
@@ -43,14 +46,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     renderCharacters(originalOrder);
 
-    
+
     exportButton.textContent = 'Export as CSV';
     exportButton.onclick = exportAsCSV;
+    exportAllTimestamps.textContent = 'Export All timestams as CSV';
+    exportAllTimestamps.onclick = exportAllTimestampsAsCSV;
 
     loadIndexedDB();
 
     function exportAsCSV() {
-        const csvContent = "data:text/csv;charset=utf-8," + characters.map(character => {
+
+        // Call the function to read all rows from IndexedDB
+        let allDatumRows = readAllRowsFromIndexedDB();
+        const csvContent = "data:text/csv;charset=utf-8," + originalOrder.map(character => {
             const count = localStorage.getItem(character) || 0;
             return `${character},${count}`;
         }).join("\n");
@@ -61,6 +69,21 @@ document.addEventListener('DOMContentLoaded', () => {
         link.setAttribute("download", "ow-stats.csv");
         document.body.appendChild(link);
         link.click();
+    }
+    function exportAllTimestampsAsCSV() {
+        readAllRowsFromIndexedDB((allDatumRows) => {
+
+            const csvContent = "data:text/csv;charset=utf-8," + allDatumRows.map(row => {
+                return row;
+            }).join(",\n");
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "ow-timestamps.csv");
+            document.body.appendChild(link);
+            link.click();
+        });
     }
 });
 
@@ -92,11 +115,11 @@ function renderCharacters(characters) {
         row.appendChild(plusButton);
 
         const characterImage = document.createElement('img');
-        characterImage.src = `OverwatchIcons/Icon-${character}.png`;
+        characterImage.src = `OverwatchIcons/Icon-${character}.png?${Date.now()}`;
 
         characterImage.addEventListener('click', () => {
             console.log('Easter egg!');
-            const eastereggImageSrc = `OverwatchIcons/Icon-${character}-easteregg.png`;
+            const eastereggImageSrc = `OverwatchIcons/Icon-${character}-easteregg.png?${Date.now()}`;
 
             fetch(eastereggImageSrc)
                 .then(response => {
@@ -179,7 +202,22 @@ function loadIndexedDB() {
         console.error('Database error: ', event.target.errorCode);
     };
 }
-
-function laggTillDatum(character) {
-    
+function readAllRowsFromIndexedDB(callback) {
+    if (db == null) {
+        console.error('Database is not open yet');
+        return;
+    }
+    const transaction = db.transaction(["datum"]);
+    const objectStore = transaction.objectStore("datum");
+    const request = objectStore.getAll();
+    request.onerror = (event) => {
+        // Handle errors!\
+        console.error('Error reading all rows:', event.target.error);
+    };
+    request.onsuccess = (event) => {
+        // Do something with the request.result!
+        console.log('All rows:', request.result);
+        callback(request.result);
+    };
 }
+

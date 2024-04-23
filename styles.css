@@ -39,7 +39,6 @@ body {
 .character-list .character {
     flex-basis: 25%;
 }
-
 button {
     border: none;
     background-color: #007bff;
@@ -47,6 +46,9 @@ button {
     padding: 5px 10px;
     border-radius: 5px;
     cursor: pointer;
+}
+#sort-buttons button {
+    padding: 1rem;
 }
 
 button:active {
